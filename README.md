@@ -5,7 +5,6 @@ Superpowers is a complete software development methodology for your coding agent
 ## Table of Contents
 
 - [How it works](#how-it-works)
-- [Commercial Services](#commercial-services)
 - [Getting Started](#installation)
   - [Claude Code](#claude-code)
   - [Antigravity](#antigravity)
@@ -42,29 +41,11 @@ Next up, once you say "go", it launches a *subagent-driven-development* process,
 
 There's a bunch more to it, but that's the core of the system. And because the skills trigger automatically, you don't need to do anything special. Your coding agent just has Superpowers.
 
-## Commercial Services
-
-If you're using Superpowers in enterprise and could benefit from commercial support, additional tooling, or managed spending, please don't hesitate to drop us a line at sales@primeradiant.com.
-
 ## Installation
 
 Installation differs by harness. If you use more than one, install Superpowers separately for each one.
 
 ### Claude Code
-
-Superpowers is available via the [official Claude plugin marketplace](https://claude.com/plugins/superpowers)
-
-#### Official Marketplace
-
-- Install the plugin from Anthropic's official marketplace:
-
-  ```bash
-  /plugin install superpowers@claude-plugins-official
-  ```
-
-#### Superpowers Marketplace
-
-The Superpowers marketplace provides Superpowers and some other related plugins for Claude Code.
 
 - Register the marketplace:
 
@@ -72,7 +53,7 @@ The Superpowers marketplace provides Superpowers and some other related plugins 
   /plugin marketplace add satishsolanki1990/ss-superpowers-marketplace
   ```
 
-- Install the plugin from this marketplace:
+- Install the plugin:
 
   ```bash
   /plugin install superpowers@superpowers-marketplace
@@ -91,41 +72,20 @@ the first message. Reinstall with the same command to update.
 
 ### Codex App
 
-Superpowers is available via the [official Codex plugin marketplace](https://github.com/openai/plugins).
-
 - In the Codex app, click on Plugins in the sidebar.
-- You should see `Superpowers` in the Coding section.
-- Click the `+` next to Superpowers and follow the prompts.
+- Use `Add Plugin` and point it to `https://github.com/satishsolanki1990/ss-superpowers`.
 
 ### Codex CLI
 
-Superpowers is available via the [official Codex plugin marketplace](https://github.com/openai/plugins).
-
-- Open the plugin search interface:
+- Install the plugin from this repository:
 
   ```bash
-  /plugins
+  codex plugin install https://github.com/satishsolanki1990/ss-superpowers
   ```
-
-- Search for Superpowers:
-
-  ```bash
-  superpowers
-  ```
-
-- Select `Install Plugin`.
 
 ### Cursor
 
-- In Cursor Agent chat, install from marketplace:
-
-  ```text
-  /add-plugin superpowers
-  ```
-
-- Or search for "superpowers" in the plugin marketplace.
-
-- To install from the git repo instead:
+- In Cursor Agent chat, install from the git repo:
 
   ```text
   /add-plugin https://github.com/satishsolanki1990/ss-superpowers
@@ -187,47 +147,23 @@ Superpowers is available via the [official Codex plugin marketplace](https://git
 
 ### GitHub Copilot CLI
 
-- Register the marketplace:
+- Install the plugin from this repository:
 
   ```bash
-  copilot plugin marketplace add satishsolanki1990/ss-superpowers-marketplace
-  ```
-
-- Install the plugin:
-
-  ```bash
-  copilot plugin install superpowers@superpowers-marketplace
+  copilot plugin install https://github.com/satishsolanki1990/ss-superpowers
   ```
 
 ### Grok Build CLI
 
-Superpowers is available via the [official Grok plugin marketplace](https://github.com/xai-org/plugin-marketplace).
-
-- Install the plugin from xAI's official marketplace:
+- Install the plugin from this repository:
 
   ```bash
-  grok plugin install superpowers@xai-official --trust
-  ```
-
-- Or open the marketplace in the TUI, search for Superpowers, and install it:
-
-  ```text
-  /marketplace
+  grok plugin install https://github.com/satishsolanki1990/ss-superpowers
   ```
 
 ### Kimi Code
 
-Superpowers is available in Kimi Code's plugin marketplace.
-
-- Open Kimi Code's plugin manager:
-
-  ```text
-  /plugins
-  ```
-
-- Go to `Marketplace` > `Superpowers` and install it.
-
-- Or install directly from this repository:
+- Install the plugin from this repository:
 
   ```text
   /plugins install https://github.com/satishsolanki1990/ss-superpowers
@@ -296,11 +232,7 @@ turn loses the bootstrap — start a fresh session if skills stop triggering.
 
 ## Community
 
-Superpowers is built by [Jesse Vincent](https://blog.fsck.com) and the rest of the folks at [Prime Radiant](https://primeradiant.com).
-
-- **Discord**: [Join us](https://discord.gg/35wsABTejz) for community support, questions, and sharing what you're building with Superpowers
 - **Issues**: https://github.com/satishsolanki1990/ss-superpowers/issues
-- **Release announcements**: [Sign up](https://primeradiant.com/superpowers/) to get notified about new versions
 
 ## What's Inside
 
@@ -330,12 +262,10 @@ Superpowers is built by [Jesse Vincent](https://blog.fsck.com) and the rest of t
 
 ## Philosophy
 
-- **Test-Driven Development** - Write tests first, always
-- **Systematic over ad-hoc** - Process over guessing
-- **Complexity reduction** - Simplicity as primary goal
-- **Evidence over claims** - Verify before declaring success
-
-Read [the original release announcement](https://blog.fsck.com/2025/10/09/superpowers/).
+- **Test-Driven Development** — Write tests first, always. RED-GREEN-REFACTOR is the rhythm, not a suggestion.
+- **Systematic over ad-hoc** — Follow a repeatable process instead of guessing. Skills encode proven workflows so agents don't improvise.
+- **Complexity reduction** — Simplicity is the primary goal. YAGNI and DRY over speculative abstractions.
+- **Evidence over claims** — Verify before declaring success. Run the tests, read the output, confirm the behavior.
 
 ## Contributing
 
@@ -347,7 +277,7 @@ The general contribution process for Superpowers is below. Keep in mind that we 
 4. Follow the `writing-skills` skill for creating and testing new and modified skills
 5. Submit a PR, being sure to fill in the pull request template.
 
-Skill-behavior tests use the drill eval harness from [superpowers-evals](https://github.com/prime-radiant-inc/superpowers-evals/), cloned into `evals/` — see `evals/README.md` for setup. Plugin-infrastructure tests live at `tests/` and run via the relevant `run-*.sh` or `npm test`.
+Skill-behavior tests use the drill eval harness, cloned into `evals/` — see `evals/README.md` for setup. Plugin-infrastructure tests live at `tests/` and run via the relevant `run-*.sh` or `npm test`.
 
 See `skills/writing-skills/SKILL.md` for the complete guide.
 
@@ -361,4 +291,4 @@ MIT License - see LICENSE file for details
 
 ## Visual companion telemetry
 
-Because skills and plugins don't provide any feedback to creators, we have no idea how many of you are using Superpowers. By default, the Prime Radiant logo on brainstorming's optional visual companion feature is loaded from our website. It includes the version of Superpowers in use. It does not include any details about your project, prompt, or coding agent. We don't see your clicks or anything about what you're building. This helps us have a rough idea of how many folks are using Superpowers and which version of Superpowers they're using. It's 100% optional. To disable this, set the environment variable `SUPERPOWERS_DISABLE_TELEMETRY` to any true value. Superpowers also honors Claude Code's `DISABLE_TELEMETRY` and `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC` opt-outs.
+By default, the logo on brainstorming's optional visual companion feature is loaded from an external server. It includes the version of Superpowers in use. It does not include any details about your project, prompt, or coding agent. This is 100% optional. To disable this, set the environment variable `SUPERPOWERS_DISABLE_TELEMETRY` to any true value. Superpowers also honors Claude Code's `DISABLE_TELEMETRY` and `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC` opt-outs.
