@@ -1,6 +1,6 @@
 ---
 name: dispatching-parallel-agents
-description: Use when facing 2+ independent tasks that can be worked on without shared state or sequential dependencies
+description: Use when facing 2+ substantial independent tasks where concurrency provides meaningful wall-clock savings and coordination cost is low
 ---
 
 # Dispatching Parallel Agents
@@ -34,10 +34,12 @@ digraph when_to_use {
 ```
 
 **Use when:**
-- 3+ test files failing with different root causes
-- Multiple subsystems broken independently
+- 2+ substantial independent problems (different subsystems, different root causes)
 - Each problem can be understood without context from others
 - No shared state between investigations
+- The coordination overhead is justified by meaningful wall-clock savings
+
+The decision depends on amount of work, independence, conflict risk, and expected time savings — not a fixed task count. Two 30-minute independent investigations justify parallelism; four 20-second mechanical edits do not.
 
 **Don't use when:**
 - Failures are related (fix one might fix others)
