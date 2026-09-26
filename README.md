@@ -53,13 +53,13 @@ Installation differs by harness. If you use more than one, install Superpowers s
 - Register the marketplace:
 
   ```bash
-  /plugin marketplace add satishsolanki1990/ss-superpowers-marketplace
+  /plugin marketplace add satishsolanki1990/ss-superpowers
   ```
 
 - Install the plugin:
 
   ```bash
-  /plugin install superpowers@superpowers-marketplace
+  /plugin install superpowers@ss-superpowers
   ```
 
 ### Antigravity
@@ -210,7 +210,7 @@ Qwen Code installs plugins from Claude Code marketplaces directly.
 - Install the plugin from this repository, and pick `superpowers` when prompted:
 
   ```bash
-  qwen extensions install obra/superpowers
+  qwen extensions install satishsolanki1990/ss-superpowers
   ```
 
 - Update later:
@@ -245,7 +245,7 @@ Superpowers is available as a native Muse plugin — same repo, same skills, all
   Or clone and install:
 
   ```bash
-  git clone https://github.com/obra/superpowers.git
+  git clone https://github.com/satishsolanki1990/ss-superpowers.git
   muse plugins install ./superpowers
   muse plugins approve superpowers
   ```
