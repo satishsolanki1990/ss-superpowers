@@ -17,9 +17,9 @@ task. This skill keeps what those two things bought, by other means: the
 brief is the spec, the ledger is your memory, TDD is the per-task gate, and
 the final reviewer is the second pair of eyes.
 
-**Core principle:** The plan already did the thinking. Execute it exactly,
-prove each step with a test you watched fail and then pass, and leave a
-record that survives your own forgetting.
+**Core principle:** The plan already made the decisions. Build what each
+task requires, prove it with tests you watched fail and then pass, and
+leave a record that survives your own forgetting.
 
 **Narration:** between tool calls, narrate at most one short line — the
 ledger and the tool results carry the record.
@@ -88,10 +88,10 @@ digraph process {
     subgraph cluster_per_task {
         label="Per Task";
         "task-start: brief + BASE; read the brief" [shape=box];
-        "Work the steps in order: TDD, run every verification, read every output" [shape=box];
-        "Step output matches plan's Expected?" [shape=diamond];
+        "Work the task: tests first, implement, run the Verification, read every output" [shape=box];
+        "Output matches the Verification's Expected?" [shape=diamond];
         "Plan wrong? Rule and ledger. Code wrong? systematic-debugging" [shape=box];
-        "Commit as the plan's commit steps say" [shape=box];
+        "Commit in logical chunks" [shape=box];
         "Completion contract met?" [shape=diamond];
         "task-done: run tests, ledger the result; mark todo complete" [shape=box];
     }
@@ -104,13 +104,13 @@ digraph process {
     "Use superpowers:finishing-a-development-branch" [shape=box style=filled fillcolor=lightgreen];
 
     "Setup: worktree, workspace + ledger, read plan + spec, pre-flight scan" -> "task-start: brief + BASE; read the brief";
-    "task-start: brief + BASE; read the brief" -> "Work the steps in order: TDD, run every verification, read every output";
-    "Work the steps in order: TDD, run every verification, read every output" -> "Step output matches plan's Expected?";
-    "Step output matches plan's Expected?" -> "Plan wrong? Rule and ledger. Code wrong? systematic-debugging" [label="no"];
-    "Plan wrong? Rule and ledger. Code wrong? systematic-debugging" -> "Work the steps in order: TDD, run every verification, read every output";
-    "Step output matches plan's Expected?" -> "Commit as the plan's commit steps say" [label="yes, last step"];
-    "Commit as the plan's commit steps say" -> "Completion contract met?";
-    "Completion contract met?" -> "Work the steps in order: TDD, run every verification, read every output" [label="no - finish the task"];
+    "task-start: brief + BASE; read the brief" -> "Work the task: tests first, implement, run the Verification, read every output";
+    "Work the task: tests first, implement, run the Verification, read every output" -> "Output matches the Verification's Expected?";
+    "Output matches the Verification's Expected?" -> "Plan wrong? Rule and ledger. Code wrong? systematic-debugging" [label="no"];
+    "Plan wrong? Rule and ledger. Code wrong? systematic-debugging" -> "Work the task: tests first, implement, run the Verification, read every output";
+    "Output matches the Verification's Expected?" -> "Commit in logical chunks" [label="yes"];
+    "Commit in logical chunks" -> "Completion contract met?";
+    "Completion contract met?" -> "Work the task: tests first, implement, run the Verification, read every output" [label="no - finish the task"];
     "Completion contract met?" -> "task-done: run tests, ledger the result; mark todo complete" [label="yes"];
     "task-done: run tests, ledger the result; mark todo complete" -> "More tasks remain?";
     "More tasks remain?" -> "task-start: brief + BASE; read the brief" [label="yes"];
@@ -163,9 +163,8 @@ against it. A plan with no reachable spec gets a ledger note saying so —
 rulings made without one are provisional.
 
 **REQUIRED SUB-SKILL:** load superpowers:test-driven-development now,
-before Task 1. It governs every step of every task below; a plan whose
-steps already say "write the failing test first" does not exempt you
-from reading it.
+before Task 1. It governs every task below; a plan whose Tests sections
+already describe the failing tests does not exempt you from reading it.
 
 Before Task 1, scan the plan for conflicts between tasks. The plan's
 Interfaces blocks tell you where to look: for every task that consumes
@@ -197,21 +196,24 @@ Every tool call is a turn that re-reads your whole context. Bookkeeping
 rides along with work — a ledger append in the same call as the commit,
 never in a call of its own.
 
-### 2. Work the steps
+### 2. Work the task
 
-The plan's steps are already in RED-GREEN order; follow them in that
-order under superpowers:test-driven-development, loaded at setup. A test
-step's code is written first and run first. Watching it fail is a step,
-not a formality — a test that passes before the implementation exists is
-a finding about the test.
+A task in the plan gives you Requirements, Interfaces, Tests, and
+Verification; it describes what to build, not every keystroke. Work it
+under superpowers:test-driven-development, loaded at setup: write the
+tests the Tests section describes first and run them. Watching them fail
+is part of the work, not a formality — a test that passes before the
+implementation exists is a finding about the test. Then implement the
+Requirements, honoring the Interfaces exactly.
 
-Every step that runs a command has an `Expected:` line. Run the command,
-read its output, and compare. Three outcomes:
+The Verification block (and any other command in the brief) has an
+`Expected:` line. Run the command, read its output, and compare. Three
+outcomes:
 
-- **Matches.** Next step.
+- **Matches.** Move on.
 - **The code is wrong.** Use superpowers:systematic-debugging. Find the
-  cause; never patch the symptom to make the step's output match.
-- **The plan is wrong** — a step contradicts the spec, an interface from an
+  cause; never patch the symptom to make the output match.
+- **The plan is wrong** — the task contradicts the spec, an interface from an
   earlier task doesn't match what this task consumes, a command that
   cannot work. Rule on the smallest change that satisfies the spec, ledger
   it as `Task <N>: Ruling: <finding> — <what you decided and why>`, and
@@ -219,8 +221,9 @@ read its output, and compare. Three outcomes:
   is carried, not remembered: later tasks that touch
   the same interface read it from the ledger.
 
-Commit as the plan's commit steps say. A task that spans several commits
-is fine; BASE is what the review range is cut from, never `HEAD~1`.
+Commit in logical chunks of related edits, not one bulk commit at the
+end. A task that spans several commits is fine; BASE is what the review
+range is cut from, never `HEAD~1`.
 
 ### 3. The completion contract
 
@@ -326,8 +329,8 @@ Use superpowers:finishing-a-development-branch.
 | Excuse | Reality |
 |--------|---------|
 | "I remember what Task N says" | You remember a summary. The brief has the exact values. Read it. |
-| "The plan's code is right, skip watching the test fail" | A test you never saw fail proves nothing. It is one step. Run it. |
-| "I'll run the full suite at the end instead of per step" | Per-step runs are how you learn which step broke it. The end-of-task run is the contract, not a substitute. |
+| "The plan is clear, skip watching the test fail" | A test you never saw fail proves nothing. Run it. |
+| "I'll run the full suite at the end instead of as I go" | Running tests as you go is how you learn which change broke it. The end-of-task run is the contract, not a substitute. |
 | "The plan is wrong here, I'll just do the right thing" | Do the right thing and ledger the ruling. Unledgered deviation is a decision made in secret. |
 | "I'll write the ledger lines after a few tasks" | Compaction does not wait for a convenient moment. One line per task, in the same message as the commit. |
 | "Let me check in before the next task" | They chose inline to spend less. Progress prompts spend their time instead. Only the five stops stop you. |
@@ -352,22 +355,22 @@ You: I'm using the executing-plans skill to implement this plan inline.
 Task 1: Hook installation script
 
 [task-start plan 1 → brief read; BASE a1b2c3d]
-[Step 1: write failing test — written]
-[Step 2: run it — FAIL: install_hook not defined. Matches Expected.]
-[Step 3: implement — written]
-[Step 4: run it — PASS 1/1. Matches Expected.]
-[Step 5: commit — d4e5f6a]
+[Tests: write the cases the Tests section lists — written]
+[Run them — FAIL: install_hook not defined. Expected red.]
+[Implement Requirements — written]
+[Verification: npm test -- hooks — PASS 1/1. Matches Expected.]
+[Commit — d4e5f6a]
 [Contract: tests ran, output read, no deviations]
 [task-done plan 1 a1b2c3d -- npm test -- hooks → ledger: Task 1: complete (commits a1b2c3d..d4e5f6a, tests: npm test -- hooks → 1/1 pass)]
 
 Task 2: Recovery modes
 
 [task-start plan 2 → brief read; BASE d4e5f6a]
-[Step 2: run failing test — FAIL, but on an import error: Task 1 exported
+[Run new tests — FAIL, but on an import error: Task 1 exported
  installHook, brief consumes install_hook]
 [Ruling: brief's consumer name is a typo against Task 1's Produces block;
  use installHook — Ledger: Task 2: Ruling: install_hook → installHook — matches Task 1 Produces — cost if wrong: one rename]
-[Steps 2-5 as planned; commit b7c8d9e]
+[Implement, Verification matches Expected; commit b7c8d9e]
 [task-done plan 2 d4e5f6a -- npm test -- recovery → ledger: Task 2: complete (commits d4e5f6a..b7c8d9e, tests: npm test -- recovery → 8/8 pass)]
 
 ...
