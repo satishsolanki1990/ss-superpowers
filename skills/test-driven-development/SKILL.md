@@ -104,6 +104,16 @@ Write simplest code to pass the test. Don't add features, refactor other code, o
 
 Run the affected test. Confirm it passes. Run broader verification at logical completion boundaries, not after every small iteration.
 
+**"Other tests" means the project's suite, not just your file.** A
+green run of the test you wrote is not a green suite. Before you call
+the change done, run the project's test command (bare `pytest`,
+`npm test`, `cargo test` — whatever the repo uses) even when your task
+named only one test file. A scope statement in your task bounds the
+deliverable, not your verification. Any failure that run shows —
+including one you didn't cause — goes in your report by name; a red
+test you watched scroll past and didn't mention is a report falsified
+by omission.
+
 ### REFACTOR - Clean Up
 
 After green only: remove duplication, improve names, extract helpers. Keep tests green. Don't add behavior.
