@@ -13,17 +13,32 @@ Execute plan by dispatching a fresh implementer subagent per task, a task review
 
 **Narration:** between tool calls, narrate at most one short line.
 
-**Continuous execution:** Do not pause to check in with your human partner between tasks. Execute all tasks from the plan without stopping. The only reasons to stop are the four named below, or all tasks complete.
+**Continuous execution:** Do not pause to check in with your human partner between tasks. Execute all tasks from the plan without stopping. The only reasons to stop are the five named below, or all tasks complete.
 
-**Rulings, not stalls.** A running plan does not wait on a human. Conflicts,
-ambiguities, plan defects — decide them. The spec is the binding authority, the
+**Rulings, not stalls.** A running plan does not wait on a human for small
+calls. Implementation-level conflicts, ambiguities, plan defects — decide them. The spec is the binding authority, the
 plan is its argument, and your judgment settles what neither answers. Record
 every decision in the ledger as `Ruling: <what you decided> — <why> — <what it costs if wrong>`, and keep going.
 
-Four things stop you, and only these: an irreversible or destructive
-operation; a security-sensitive action; a side effect outside this worktree
-that norms say you ask about first (a merge, a push, a publish); and a plan so
-broken that every path forward is a guess.
+**Design questions go to your human partner.** Rulings cover small,
+implementation-level gaps: a helper name, a test fixture, an ordering
+detail, a plan typo. A question is design-level, and you stop and ask,
+when the answer would:
+
+- change a data model, schema, migration, or stored format;
+- change a public interface: an API endpoint, request/response shape,
+  CLI flag, or a signature other code depends on;
+- change user-visible behavior or copy beyond what the spec states;
+- contradict the spec or a recorded decision (ADR, decision log);
+- add a dependency or an external service.
+
+Batch design questions: finish the tasks they don't block, then ask them
+together, each with your recommendation and what it costs if wrong.
+
+Five things stop you: a design-level question (above); an irreversible or
+destructive operation; a security-sensitive action; a side effect outside
+this worktree that norms say you ask about first (a merge, a push, a
+publish); and a plan so broken that every path forward is a guess.
 
 ## When to Use
 
@@ -58,7 +73,8 @@ todo per task. If the plan names a Spec, read that too.
 
 Before dispatching Task 1, do a quick scan for obvious conflicts between
 tasks (shared files, contradictory requirements). If you find conflicts, rule
-on them and ledger the rulings. If the scan is clean, proceed.
+on implementation-level ones and ledger the rulings; bring design-level ones
+to your human partner before dispatching Task 1. If the scan is clean, proceed.
 
 ## Model Selection
 
@@ -172,6 +188,7 @@ adjudicate each open finding yourself:
 - **Real but nothing downstream builds on it:** park it, note it's real and deferred.
 - **Real and load-bearing:** rule on the smallest change that unblocks
   dependent work, ledger it, and carry it into the next task's dispatch.
+  If that change is design-level, stop and ask instead.
 
 ### 5. Complete the task
 

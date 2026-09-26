@@ -29,18 +29,34 @@ between tasks. They chose inline execution to spend less, not to answer
 "should I continue?" after every task. Execute all tasks from the plan
 without stopping.
 
-**Rulings, not stalls.** Conflicts, ambiguities, plan defects — decide them.
+**Rulings, not stalls.** Implementation-level conflicts, ambiguities, plan
+defects — decide them.
 The spec is the binding authority, the plan is its argument, and your
 judgment settles what neither answers. Record every decision in the ledger
 as `Ruling: <what you decided> — <why> — <what it costs if wrong>`, and keep
 going. Deviating from the plan without a ledgered ruling is a decision made
 in secret.
 
-Four things stop you, and only these: an irreversible or destructive
-operation; a security-sensitive action; a side effect outside this worktree
-that norms say you ask about first (a merge, a push to a shared branch, a
-publish); and a plan so broken that every path forward is a guess. For
-those, stop and ask.
+**Design questions go to your human partner.** Rulings cover small,
+implementation-level gaps: a helper name, a test fixture, an ordering
+detail, a plan typo. A question is design-level, and you stop and ask,
+when the answer would:
+
+- change a data model, schema, migration, or stored format;
+- change a public interface: an API endpoint, request/response shape,
+  CLI flag, or a signature other code depends on;
+- change user-visible behavior or copy beyond what the spec states;
+- contradict the spec or a recorded decision (ADR, decision log);
+- add a dependency or an external service.
+
+Batch design questions: finish the tasks they don't block, then ask them
+together, each with your recommendation and what it costs if wrong.
+
+Five things stop you: a design-level question (above); an irreversible or
+destructive operation; a security-sensitive action; a side effect outside
+this worktree that norms say you ask about first (a merge, a push to a
+shared branch, a publish); and a plan so broken that every path forward is
+a guess. For those, stop and ask.
 
 ## When to Use
 
@@ -158,7 +174,8 @@ produces against what the other consumes, and what you found. Tasks that
 share nothing get no row; a plan whose tasks share nothing gets the single
 line `Pre-flight: no shared interfaces`. Rule on each conflict a row
 surfaces with the spec as the binding authority, record the ruling beside
-its row, and start Task 1. Each task's own text is checked when you read
+its row, and start Task 1. A conflict whose answer is design-level goes to
+your human partner before Task 1 instead. Each task's own text is checked when you read
 its brief, not here.
 
 ## The Task Loop
@@ -198,7 +215,8 @@ read its output, and compare. Three outcomes:
   earlier task doesn't match what this task consumes, a command that
   cannot work. Rule on the smallest change that satisfies the spec, ledger
   it as `Task <N>: Ruling: <finding> — <what you decided and why>`, and
-  continue. The ruling is carried, not remembered: later tasks that touch
+  continue (unless the fix is design-level — then stop and ask). The ruling
+  is carried, not remembered: later tasks that touch
   the same interface read it from the ledger.
 
 Commit as the plan's commit steps say. A task that spans several commits
@@ -312,7 +330,7 @@ Use superpowers:finishing-a-development-branch.
 | "I'll run the full suite at the end instead of per step" | Per-step runs are how you learn which step broke it. The end-of-task run is the contract, not a substitute. |
 | "The plan is wrong here, I'll just do the right thing" | Do the right thing and ledger the ruling. Unledgered deviation is a decision made in secret. |
 | "I'll write the ledger lines after a few tasks" | Compaction does not wait for a convenient moment. One line per task, in the same message as the commit. |
-| "Let me check in before the next task" | They chose inline to spend less. Progress prompts spend their time instead. Only the four stops stop you. |
+| "Let me check in before the next task" | They chose inline to spend less. Progress prompts spend their time instead. Only the five stops stop you. |
 | "I read my own diff carefully; the final reviewer is redundant" | Same author, same blind spots. The reviewer is the only fresh context this run buys. |
 | "Tests should pass, the change was trivial" | "Should" is not evidence. The contract requires the command and its output. |
 | "Subagents are slow and expensive, I'll skip the final review too" | Inline already removed the per-task reviewers. One review of the whole branch is the floor, not the ceiling. |
