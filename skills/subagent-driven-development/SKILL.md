@@ -159,7 +159,8 @@ or a verified gap.
 - Resolve each ⚠️ Can't-verify item that affects the verdict before
   completing the task: run the named check yourself or ask the implementer
   for the evidence. If the evidence shows a defect, it enters the loop.
-- Record Minor findings in the ledger as deferred, with a revisit trigger.
+- Record Minor findings in the ledger as deferred, with a revisit trigger
+  (see using-superpowers, Deferrals).
   They never enter the loop.
 - A finding that conflicts with the plan text: rule on it, ledger the ruling.
 

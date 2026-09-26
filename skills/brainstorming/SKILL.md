@@ -12,16 +12,29 @@ human partner's explicit approval before any implementation.
 ## Investigate Before Designing
 
 Confident premises about a codebase are often wrong. Before proposing a
-design for a bounded or architectural change, do a read-only investigation:
+design for a bounded or architectural change, do a read-only investigation
+and write it up as a report that opens with:
 
-- Read the code paths the change touches. Code is the source of truth;
-  docs and comments drift, so confirm any doc claim against the code.
-- Cite evidence as `path/to/file.py:123` for every claim the design rests on.
-- Separate what you verified from what you assume.
-- End with a list of **open questions and design decisions** your human
-  partner needs to settle. Flag contradictions between the request, the
-  code, and any recorded decisions (ADRs, decision logs) instead of
-  resolving them silently.
+> Read-only investigation. No files changed.
+
+- Read the code, tests, configuration, and data flow the change touches.
+  Identify the current behavior and the path that produces it.
+- Cite `path/to/file.py:120-134` for every material claim. Include
+  command, query, test, or count output when it is the evidence.
+- Look for an existing implementation of similar behavior before proposing
+  a new pattern. Note ownership boundaries, complexity hotspots, existing
+  tests, and likely regression risks.
+- Code is the source of truth; docs drift. Check recorded decisions (ADRs,
+  a decisions doc, CLAUDE.md) that may constrain the change, verify them
+  against the code, and say so if one is missing, stale, or contradicted.
+- Separate confirmed facts, reasonable inferences, and unresolved questions.
+- End with every **open question and design decision** the investigation
+  raised. Look actively for questions about product behavior, scope, data
+  ownership, security or permissions, monetization boundaries, public
+  interfaces, recorded decisions, and existing deferred items. Where you
+  have a recommendation, give it with reasoning — and still wait. If
+  nothing is unresolved, say so explicitly: silence and "nothing to
+  decide" must be distinguishable.
 
 No edits, scaffolding, dependency installs, or migrations during
 investigation.
@@ -140,6 +153,11 @@ is the whole process.
 - Propose approaches with trade-offs only when genuinely needed
 - Lead with your recommended option and explain why
 - YAGNI ruthlessly - remove unnecessary features from every approach and design
+- Performance and optimization work needs a concrete signal: a measured
+  threshold breach, a reproducible latency or resource problem, a
+  user-facing issue, or a known dependency with an explicit requirement.
+  Otherwise defer it with a revisit trigger (see using-superpowers,
+  Deferrals)
 
 **Presenting the design:**
 

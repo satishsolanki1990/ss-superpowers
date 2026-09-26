@@ -34,6 +34,12 @@ This structure informs the task decomposition.
 
 ## Task Right-Sizing
 
+Divide by coherent behavior, not file boundaries. Each task has one clear
+objective and no unrelated cleanup — record optional cleanup as a deferral
+instead. Order tasks by genuine dependencies: a task that establishes
+behavior, contracts, or data another task needs comes first, and the two
+are not parallelized.
+
 A task is the smallest unit that carries its own test cycle and is worth a
 fresh reviewer's gate. Fold setup, configuration, scaffolding, and
 documentation steps into the task whose deliverable needs them; split only
@@ -96,6 +102,14 @@ Run: `pytest tests/path/test.py -v`
 Expected: all tests pass
 ````
 
+## Commits
+
+A task is a unit of review; a commit is a unit of history. Commit related
+edits together as one coherent change; don't accumulate a whole task into
+one bulk commit. Each commit builds and passes its own tests. A schema
+change, its backfill, and the code that reads it may be one commit; that
+plus an unrelated rename is two. Messages say what changed and why.
+
 ## What a Task Contains
 
 A task is ready when the implementer can build exactly one reasonable thing
@@ -119,6 +133,13 @@ Two opposite failures:
 - **Transcripts** — function bodies the signature and tests already
   determine. A plan longer than the code it describes has written the code
   instead.
+
+Exact files and signatures belong in a plan the implementing agent writes
+and executes itself. When you write a prompt for a *different* agent or
+session outside this plan workflow, state the problem, desired outcome,
+and acceptance criteria instead; name files only as evidence, and
+prescribe names or signatures only where an existing contract or recorded
+decision requires them.
 
 ## Self-Review
 

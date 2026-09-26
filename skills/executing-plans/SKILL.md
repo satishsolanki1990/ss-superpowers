@@ -293,7 +293,7 @@ because the spec was silent has graded the spec, not the effect. Then:
 - **Can't verify** items that affect the verdict: get the evidence (run the
   check the reviewer named). A defect it reveals enters the fix pass;
   evidence that clears it goes in the ledger.
-- **Minor** goes to the ledger as `Final: minor (deferred): <one-liner>`
+- **Minor** goes to the ledger as `Final: minor (deferred): <one-liner> — revisit when: <trigger>`
   and to your final message under "Deferred minors". Minors never enter
   the fix pass, and never become rulings — a ruling is a decision about a
   conflict, not a note that you declined a polish suggestion.

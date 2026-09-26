@@ -32,6 +32,22 @@ When multiple skills apply, process skills come first.
 | "Let me do a few things first, then check skills" | Check for skills before acting. |
 | "This definitely doesn't need any skill" | At least consider whether one applies. |
 
+## Deferrals
+
+Whenever you defer something — scope cut from a design, a Minor review
+finding, optional cleanup, performance work without a signal — record it
+where the work is tracked (spec, plan, ledger, or final message) with:
+
+- What is deferred
+- Why it is not being built now
+- The concrete trigger to reconsider: a measurable threshold, a
+  user-facing signal, a dependency landing, a product decision, or a usage
+  or scale milestone
+- Any measurement needed to evaluate that trigger
+
+"Later," "future improvement," and other time-only statements are not
+triggers.
+
 ## Platform Adaptation
 
 If your harness appears here, read its reference file for special instructions:

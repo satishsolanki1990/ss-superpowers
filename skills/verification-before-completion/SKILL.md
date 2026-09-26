@@ -24,6 +24,10 @@ BEFORE claiming any status:
 
 Existing verification evidence is valid when it was run against the same relevant working-tree state and no subsequent changes could invalidate it. If you modified code after the last test run, run tests again. If you only read files or wrote a response, the prior evidence still holds — cite it.
 
+**Acceptable evidence:** focused tests, full-suite runs, reproduction steps, before-and-after output, database or query results, type checking or linting, direct inspection of rendered or persisted behavior. When the change affects something countable (records, generated output, coverage, query results), show before-and-after counts.
+
+**Regressions:** do not claim "no regressions" without a successful full-suite run. If the full suite was not run or could not complete, say so. Never report unavailable evidence as passed.
+
 Passing tests prove test results, not necessarily that every requested requirement was implemented. Before claiming a task is complete, confirm both that relevant verification passes and that the requested acceptance criteria are satisfied.
 
 ## Common Failures
