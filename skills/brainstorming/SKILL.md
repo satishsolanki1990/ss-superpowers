@@ -17,6 +17,9 @@ and write it up as a report that opens with:
 
 > Read-only investigation. No files changed.
 
+Scale it to risk: a trivial, isolated change needs a few cited lines, not
+the full report below.
+
 - Read the code, tests, configuration, and data flow the change touches.
   Identify the current behavior and the path that produces it.
 - Cite `path/to/file.py:120-134` for every material claim. Include

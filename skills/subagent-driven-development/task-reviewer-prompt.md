@@ -147,7 +147,8 @@ Subagent (general-purpose):
     Categorize issues by actual severity. Not everything is Critical.
     Critical means must not merge: incorrect core behavior, data loss or
     corruption risk, a security or ownership violation, a broken required
-    consumer, an unsafe migration. Important means this task cannot be trusted until it is fixed: incorrect
+    consumer, a missing requirement that defeats the task's goal, an unsafe
+    migration, a reliably failing required test. Important means this task cannot be trusted until it is fixed: incorrect
     or fragile behavior, a missed requirement, or maintainability damage you
     would block a merge over — verbatim duplication of a logic block,
     swallowed errors, tests that assert nothing. "Coverage could be broader"
@@ -180,7 +181,7 @@ Subagent (general-purpose):
       for everything you could verify]
 
     ### Strengths
-    [What's well done? Be specific.]
+    [One or two lines, specific. Omit if nothing stands out.]
 
     ### Issues
 
@@ -195,6 +196,8 @@ Subagent (general-purpose):
     ### Assessment
 
     **Task quality:** [Approved | Needs fixes]
+    (A task-scoped gate, not a merge decision — the five-way merge verdict
+    belongs to the final whole-branch review.)
 
     **Reasoning:** [1-2 sentence technical assessment]
 ```
