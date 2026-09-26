@@ -38,7 +38,8 @@ Divide by coherent behavior, not file boundaries. Each task has one clear
 objective and no unrelated cleanup — record optional cleanup as a deferral
 instead. Order tasks by genuine dependencies: a task that establishes
 behavior, contracts, or data another task needs comes first, and the two
-are not parallelized.
+are not parallelized. Mark tasks parallel-safe only when each can be
+implemented, tested, reviewed, and reverted independently.
 
 A task is the smallest unit that carries its own test cycle and is worth a
 fresh reviewer's gate. Fold setup, configuration, scaffolding, and
@@ -137,9 +138,15 @@ Two opposite failures:
 Exact files and signatures belong in a plan the implementing agent writes
 and executes itself. When you write a prompt for a *different* agent or
 session outside this plan workflow, state the problem, desired outcome,
-and acceptance criteria instead; name files only as evidence, and
-prescribe names or signatures only where an existing contract or recorded
-decision requires them.
+and acceptance criteria instead. Add investigation evidence, binding
+constraints, non-goals, required verification, or known risks only when
+they reduce risk for that task. Name files only as evidence; do not
+mandate files to edit, new names, internal signatures, a step-by-step
+procedure, or a new abstraction unless an existing contract or recorded
+decision requires it — and cite that constraint. Before handing off, cut
+any line that dictates an implementation merely because it was
+convenient. Prefer the shortest prompt that gives the implementer what it
+needs.
 
 ## Self-Review
 
