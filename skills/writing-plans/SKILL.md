@@ -140,6 +140,6 @@ recommendation.
 
 Recommend an execution strategy in the same message, in one sentence:
 superpowers:subagent-driven-development when subagents are available and
-tasks are mostly independent (review gate on every task), otherwise
+tasks are mostly independent (per-task reviews for non-trivial tasks, plus a final review), otherwise
 superpowers:executing-plans (cheaper, one final review). If your human
 partner already stated a preference, use it without asking again.
