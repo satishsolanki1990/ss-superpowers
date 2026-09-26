@@ -290,6 +290,9 @@ the input that triggers it — a reviewer who set a finding at Minor
 because the spec was silent has graded the spec, not the effect. Then:
 
 - **Critical and Important** enter the fix pass.
+- **Can't verify** items that affect the verdict: get the evidence (run the
+  check the reviewer named). A defect it reveals enters the fix pass;
+  evidence that clears it goes in the ledger.
 - **Minor** goes to the ledger as `Final: minor (deferred): <one-liner>`
   and to your final message under "Deferred minors". Minors never enter
   the fix pass, and never become rulings — a ruling is a decision about a

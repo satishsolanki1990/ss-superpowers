@@ -42,8 +42,10 @@ Dispatch a `general-purpose` subagent, filling the template at [code-reviewer.md
 **3. Act on feedback:**
 - Fix Critical issues immediately
 - Fix Important issues before proceeding
-- Note Minor issues for later
+- Resolve Can't-verify items that affect the verdict by getting the missing evidence
+- Record Minor issues as deferrals with a revisit trigger
 - Push back if reviewer is wrong (with reasoning)
+- Act on the verdict: do not merge on "Do not merge" or "Verdict withheld"
 
 ## Common Rationalizations
 

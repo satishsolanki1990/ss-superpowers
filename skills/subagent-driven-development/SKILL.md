@@ -156,7 +156,11 @@ Template: [task-reviewer-prompt.md](task-reviewer-prompt.md)
 Triggers when the review reports spec failure, any Critical or Important finding,
 or a verified gap.
 
-- Record Minor findings in the ledger as deferred. They never enter the loop.
+- Resolve each ⚠️ Can't-verify item that affects the verdict before
+  completing the task: run the named check yourself or ask the implementer
+  for the evidence. If the evidence shows a defect, it enters the loop.
+- Record Minor findings in the ledger as deferred, with a revisit trigger.
+  They never enter the loop.
 - A finding that conflicts with the plan text: rule on it, ledger the ruling.
 
 Everything else enters the loop. Continue fix iterations when findings are
