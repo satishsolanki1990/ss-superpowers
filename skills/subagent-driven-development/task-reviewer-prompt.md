@@ -145,7 +145,10 @@ Subagent (general-purpose):
     ## Calibration
 
     Categorize issues by actual severity. Not everything is Critical.
-    Important means this task cannot be trusted until it is fixed: incorrect
+    Critical means must not merge: incorrect core behavior, data loss or
+    corruption risk, a security or ownership violation, a broken required
+    consumer, a missing requirement that defeats the task's goal, an unsafe
+    migration, a reliably failing required test. Important means this task cannot be trusted until it is fixed: incorrect
     or fragile behavior, a missed requirement, or maintainability damage you
     would block a merge over — verbatim duplication of a logic block,
     swallowed errors, tests that assert nothing. "Coverage could be broader"
@@ -155,8 +158,16 @@ Subagent (general-purpose):
     block), that IS a finding — report it as Important, labeled
     plan-mandated. The plan's authorship does not grade its own work; the
     human decides.
-    Acknowledge what was done well before listing issues — accurate praise
-    helps the implementer trust the rest of the feedback.
+    Minor needs a concrete, stated benefit — do not flag a different
+    implementation style merely because another approach would also work.
+    Do not soften severity for politeness or inflate it to look rigorous. A
+    clean diff does not need invented findings.
+
+    Weigh evidence by what it shows: a focused test run supports the tested
+    behavior, not the repository; a diff shows changed code, not runtime
+    correctness. Never cite a file or line you did not inspect.
+
+    Acknowledge what was done well in one or two lines, before the issues.
 
     ## Output Format
 
@@ -164,12 +175,13 @@ Subagent (general-purpose):
 
     - ✅ Spec compliant | ❌ Issues found: [what's missing/extra/misunderstood,
       with file:line references]
-    - ⚠️ Cannot verify from diff: [requirements you could not verify from the
-      diff alone, and what the controller should check — report alongside the
-      ✅/❌ verdict for everything you could verify]
+    - ⚠️ Can't verify: [each material claim you could not verify from the
+      diff alone — why the evidence is insufficient, what would confirm it,
+      and whether it affects the verdict. Report alongside the ✅/❌ verdict
+      for everything you could verify]
 
     ### Strengths
-    [What's well done? Be specific.]
+    [One or two lines, specific. Omit if nothing stands out.]
 
     ### Issues
 
@@ -177,19 +189,22 @@ Subagent (general-purpose):
     #### Important (Should Fix)
     #### Minor (Nice to Have)
 
-    For each issue: file:line, what's wrong, why it matters, how to fix
-    (if not obvious).
+    For each issue: file:line; Issue (what's wrong); Impact (the concrete
+    behavior or risk); Basis (the requirement, test, or rule that makes it
+    relevant); Fix direction (the required outcome, not internal detail).
 
     ### Assessment
 
     **Task quality:** [Approved | Needs fixes]
+    (A task-scoped gate, not a merge decision — the five-way merge verdict
+    belongs to the final whole-branch review.)
 
     **Reasoning:** [1-2 sentence technical assessment]
 ```
 
 **Placeholders:**
 - `[MODEL]` — REQUIRED: reviewer model per SKILL.md Model Selection
-- `[BRIEF_FILE]` — REQUIRED: the task brief file (`scripts/task-brief PLAN N`
+- `[BRIEF_FILE]` — REQUIRED: the task brief file (`bash scripts/task-brief PLAN N`
   prints the path; same file the implementer worked from)
 - `[GLOBAL_CONSTRAINTS]` — the binding requirements copied verbatim from
   the plan's Global Constraints section or the spec: exact values, formats,
@@ -200,8 +215,9 @@ Subagent (general-purpose):
 - `[BASE_SHA]` — commit before this task
 - `[HEAD_SHA]` — current commit
 - `[DIFF_FILE]` — REQUIRED: the path the controller wrote the review
-  package to (`scripts/review-package PLAN_FILE BASE HEAD` prints the unique
+  package to (`bash scripts/review-package PLAN_FILE BASE HEAD` prints the unique
   path it wrote; the package never enters the controller's context)
 
 **Reviewer returns:** Spec Compliance verdict (✅/❌/⚠️), Strengths, Issues
-(Critical/Important/Minor), Task quality verdict
+(Critical/Important/Minor), Task quality verdict. Severity definitions match
+[code-reviewer.md](../requesting-code-review/code-reviewer.md).

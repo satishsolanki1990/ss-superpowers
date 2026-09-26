@@ -7,7 +7,7 @@ description: Use when you have a spec or requirements for substantial multi-step
 
 ## Overview
 
-Write implementation plans that tell a skilled but codebase-unfamiliar developer what to build, where, and how to verify it. Focus on task boundaries, relevant files, interfaces, dependencies, acceptance criteria, and verification strategy. DRY. YAGNI. TDD where appropriate. Frequent commits.
+Write implementation plans that tell a skilled but codebase-unfamiliar developer what to build, where, and how to verify it. Focus on task boundaries, relevant files, interfaces, dependencies, acceptance criteria, and verification strategy. DRY. YAGNI. TDD where appropriate. Commits in logical chunks of related edits.
 
 Include exact code when the API/signature/value is a requirement, ambiguity would be costly, or a tricky algorithm benefits from a concrete example. Otherwise describe the required behavior precisely enough for the implementer to write good code and tests.
 
@@ -34,6 +34,13 @@ This structure informs the task decomposition.
 
 ## Task Right-Sizing
 
+Divide by coherent behavior, not file boundaries. Each task has one clear
+objective and no unrelated cleanup — record optional cleanup as a deferral
+instead. Order tasks by genuine dependencies: a task that establishes
+behavior, contracts, or data another task needs comes first, and the two
+are not parallelized. Mark tasks parallel-safe only when each can be
+implemented, tested, reviewed, and reverted independently.
+
 A task is the smallest unit that carries its own test cycle and is worth a
 fresh reviewer's gate. Fold setup, configuration, scaffolding, and
 documentation steps into the task whose deliverable needs them; split only
@@ -47,7 +54,7 @@ neighbor. Each task ends with an independently testable deliverable.
 ```markdown
 # [Feature Name] Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task.
 
 **Goal:** [One sentence describing what this builds]
 
@@ -96,35 +103,71 @@ Run: `pytest tests/path/test.py -v`
 Expected: all tests pass
 ````
 
-## No Placeholders
+## Commits
 
-Every step must contain the actual content an engineer needs. These are **plan failures**:
-- "TBD", "TODO", "implement later", "fill in details"
-- "Add appropriate error handling" / "add validation" / "handle edge cases"
-- "Write tests for the above" (without actual test code)
-- "Similar to Task N" (repeat the code — the engineer may read tasks out of order)
-- References to types, functions, or methods not defined in any task
+A task is a unit of review; a commit is a unit of history. Commit related
+edits together as one coherent change; don't accumulate a whole task into
+one bulk commit. Each commit builds and passes its own tests. A schema
+change, its backfill, and the code that reads it may be one commit; that
+plus an unrelated rename is two. Messages say what changed and why.
+
+## What a Task Contains
+
+A task is ready when the implementer can build exactly one reasonable thing
+from it: unambiguous, not complete. Each part carries what makes it
+unambiguous and nothing more:
+
+- **Requirements:** the behavior, the edge cases by name, the acceptance
+  criteria, and every exact value the spec pins.
+- **Interfaces:** exact signatures other tasks produce or consume.
+- **Tests:** the cases and their expected outcomes. Test code only when the
+  test logic itself is a requirement.
+- **Verification:** the command to run and the output that means it passed.
+- **A reference to another task:** point to that task's Interfaces block;
+  don't repeat its content.
+
+Two opposite failures:
+
+- **Gaps** — lines that decide nothing: "TBD", "TODO", "fill in details",
+  "handle edge cases" without naming them, "write tests" without saying
+  which cases, a type or function no task defines.
+- **Transcripts** — function bodies the signature and tests already
+  determine. A plan longer than the code it describes has written the code
+  instead.
+
+Exact files and signatures belong in a plan the implementing agent writes
+and executes itself. When you write a prompt for a *different* agent or
+session outside this plan workflow, state the problem, desired outcome,
+and acceptance criteria instead. Add investigation evidence, binding
+constraints, non-goals, required verification, or known risks only when
+they reduce risk for that task. Name files only as evidence; do not
+mandate files to edit, new names, internal signatures, a step-by-step
+procedure, or a new abstraction unless an existing contract or recorded
+decision requires it — and cite that constraint. Before handing off, cut
+any line that dictates an implementation merely because it was
+convenient. Prefer the shortest prompt that gives the implementer what it
+needs.
 
 ## Self-Review
 
 After writing the complete plan, check against the spec:
 
 1. **Spec coverage:** Can you point to a task for each requirement? List gaps.
-2. **Placeholder scan:** Search for red flags from the "No Placeholders" section.
+2. **Gap and transcript scan:** Every task lets the implementer build exactly one reasonable thing, and carries no more than that (see "What a Task Contains").
 3. **Type consistency:** Do types, method signatures, and property names match across tasks?
+4. **Proportion:** A plan several times longer than its spec is a transcript. Replace bodies with signatures, test cases, and acceptance criteria.
 
 Fix issues inline.
 
 ## Execution Handoff
 
-After saving the plan, choose the execution strategy based on subagent
-availability, task independence, plan complexity, and coordination cost.
+After saving and self-reviewing the plan, link it for your human partner
+and ask them to review it. Wait for their approval before implementation.
+Include any open design questions the plan surfaced, each with your
+recommendation.
 
-If subagents are available and tasks are mostly independent, use
-superpowers:subagent-driven-development. Otherwise use
-superpowers:executing-plans.
-
-Ask the user which approach they prefer only if the choice materially
-affects something they care about and they haven't already indicated a
-preference. If the user already asked you to implement, proceed with the
-best-fit strategy.
+Recommend an execution strategy in the same message, in one sentence:
+superpowers:subagent-driven-development when subagents are available and
+tasks are mostly independent (per-task reviews for non-trivial tasks, plus a final review), otherwise
+superpowers:executing-plans (cheaper, one final review). If your human
+partner already stated a preference, use it without asking again.

@@ -13,17 +13,32 @@ Execute plan by dispatching a fresh implementer subagent per task, a task review
 
 **Narration:** between tool calls, narrate at most one short line.
 
-**Continuous execution:** Do not pause to check in with your human partner between tasks. Execute all tasks from the plan without stopping. The only reasons to stop are the four named below, or all tasks complete.
+**Continuous execution:** Do not pause to check in with your human partner between tasks. Execute all tasks from the plan without stopping. The only reasons to stop are the five named below, or all tasks complete.
 
-**Rulings, not stalls.** A running plan does not wait on a human. Conflicts,
-ambiguities, plan defects — decide them. The spec is the binding authority, the
+**Rulings, not stalls.** A running plan does not wait on a human for small
+calls. Implementation-level conflicts, ambiguities, plan defects — decide them. The spec is the binding authority, the
 plan is its argument, and your judgment settles what neither answers. Record
 every decision in the ledger as `Ruling: <what you decided> — <why> — <what it costs if wrong>`, and keep going.
 
-Four things stop you, and only these: an irreversible or destructive
-operation; a security-sensitive action; a side effect outside this worktree
-that norms say you ask about first (a merge, a push, a publish); and a plan so
-broken that every path forward is a guess.
+**Design questions go to your human partner.** Rulings cover small,
+implementation-level gaps: a helper name, a test fixture, an ordering
+detail, a plan typo. A question is design-level, and you stop and ask,
+when the answer would:
+
+- change a data model, schema, migration, or stored format;
+- change a public interface: an API endpoint, request/response shape,
+  CLI flag, or a signature other code depends on;
+- change user-visible behavior or copy beyond what the spec states;
+- contradict the spec or a recorded decision (ADR, decision log);
+- add a dependency or an external service.
+
+Batch design questions: finish the tasks they don't block, then ask them
+together, each with your recommendation and what it costs if wrong.
+
+Five things stop you: a design-level question (above); an irreversible or
+destructive operation; a security-sensitive action; a side effect outside
+this worktree that norms say you ask about first (a merge, a push, a
+publish); and a plan so broken that every path forward is a guess.
 
 ## When to Use
 
@@ -32,7 +47,7 @@ broken that every path forward is a guess.
 - Tasks can be dispatched to fresh subagents
 - You want to stay in this session
 
-**vs. executing-plans:** Use executing-plans when you lack subagent access or need a parallel session approach.
+**vs. executing-plans:** Use executing-plans when your human partner chose inline execution or no subagent tool is available. Both run in this session and share the same plan workspace and ledger.
 
 ## Setup
 
@@ -42,7 +57,7 @@ Never start implementation on a main/master branch without your human
 partner's explicit consent.
 
 - Each plan owns a workspace: at skill start, run this skill's
-  `scripts/sdd-workspace PLAN_FILE` — it prints the plan's git-ignored
+  `bash scripts/sdd-workspace PLAN_FILE` — it prints the plan's git-ignored
   directory (`<repo-root>/.superpowers/sdd/<plan-basename>/`), home to
   every artifact for THIS plan: ledger, briefs, reports, review packages.
 - Check for this plan's ledger at `<workspace>/progress.md`. If its first
@@ -58,7 +73,8 @@ todo per task. If the plan names a Spec, read that too.
 
 Before dispatching Task 1, do a quick scan for obvious conflicts between
 tasks (shared files, contradictory requirements). If you find conflicts, rule
-on them and ledger the rulings. If the scan is clean, proceed.
+on implementation-level ones and ledger the rulings; bring design-level ones
+to your human partner before dispatching Task 1. If the scan is clean, proceed.
 
 ## Model Selection
 
@@ -96,7 +112,7 @@ Hand artifacts over as files.
 
 Record BASE (`git rev-parse HEAD`) before dispatching.
 
-- **Task brief:** run this skill's `scripts/task-brief PLAN_FILE N` — it
+- **Task brief:** run this skill's `bash scripts/task-brief PLAN_FILE N` — it
   extracts the task's full text to a file and prints the path. Your dispatch
   should contain: (1) one line on where this task fits; (2) the brief path;
   (3) interfaces from earlier tasks; (4) your resolution of any ambiguity;
@@ -112,7 +128,7 @@ Template: [implementer-prompt.md](implementer-prompt.md)
 
 ### 2. Handle the report
 
-**DONE:** Generate the review package (`scripts/review-package PLAN_FILE BASE HEAD`), then dispatch the task reviewer with the printed path.
+**DONE:** Generate the review package (`bash scripts/review-package PLAN_FILE BASE HEAD`), then dispatch the task reviewer with the printed path.
 
 **DONE_WITH_CONCERNS:** Read concerns. If about correctness/scope, address before review. If observations, note and proceed to review.
 
@@ -127,7 +143,7 @@ or risky logic: dispatch the task reviewer for both spec compliance and code qua
 For trivial mechanical tasks that are well-specified and strongly verified by tests,
 the final whole-branch review provides the safety net — skip the per-task review.
 
-- Hand the reviewer its diff as a file: run `scripts/review-package PLAN_FILE BASE HEAD`
+- Hand the reviewer its diff as a file: run `bash scripts/review-package PLAN_FILE BASE HEAD`
   and pass the printed path.
 - **Reviewer inputs:** the brief file, the report file, and the review package,
   plus the global constraints from the spec.
@@ -140,7 +156,12 @@ Template: [task-reviewer-prompt.md](task-reviewer-prompt.md)
 Triggers when the review reports spec failure, any Critical or Important finding,
 or a verified gap.
 
-- Record Minor findings in the ledger as deferred. They never enter the loop.
+- Resolve each ⚠️ Can't-verify item that affects the verdict before
+  completing the task: run the named check yourself or ask the implementer
+  for the evidence. If the evidence shows a defect, it enters the loop.
+- Record Minor findings in the ledger as deferred, with a revisit trigger
+  (see using-superpowers, Deferrals).
+  They never enter the loop.
 - A finding that conflicts with the plan text: rule on it, ledger the ruling.
 
 Everything else enters the loop. Continue fix iterations when findings are
@@ -155,7 +176,7 @@ maximum as a safety cap.**
 the brief, report file, open findings, and context about prior attempts.
 
 **Every round:** the implementer fixes, re-runs covering tests, appends
-fix report. Dispatch a scoped re-review (`scripts/review-package PLAN_FILE FIX_BASE HEAD`, [re-review-prompt.md](re-review-prompt.md)).
+fix report. Dispatch a scoped re-review (`bash scripts/review-package PLAN_FILE FIX_BASE HEAD`, [re-review-prompt.md](re-review-prompt.md)).
 
 **After each round,** append to the ledger:
 `Task <N>: fix round <R>/3 (<X> addressed, <Y> open; commits <a7>..<b7>)`
@@ -172,6 +193,7 @@ adjudicate each open finding yourself:
 - **Real but nothing downstream builds on it:** park it, note it's real and deferred.
 - **Real and load-bearing:** rule on the smallest change that unblocks
   dependent work, ledger it, and carry it into the next task's dispatch.
+  If that change is design-level, stop and ask instead.
 
 ### 5. Complete the task
 
@@ -185,7 +207,7 @@ Mark the todo complete and move on.
 For substantial plan execution, run the final whole-branch review. Skip it
 only if equivalent broad review evidence already exists on the same final tree.
 
-Run `scripts/review-package PLAN_FILE MERGE_BASE HEAD` and dispatch the
+Run `bash scripts/review-package PLAN_FILE MERGE_BASE HEAD` and dispatch the
 final reviewer on the most capable available model, using
 [code-reviewer.md](../requesting-code-review/code-reviewer.md). Point it
 at the ledger's deferred-minor and parked lines.

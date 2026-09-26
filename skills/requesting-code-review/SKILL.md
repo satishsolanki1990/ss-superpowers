@@ -25,7 +25,7 @@ Dispatch a code reviewer subagent to catch issues before they cascade. The revie
 
 **1. Get git SHAs:**
 ```bash
-BASE_SHA=$(git rev-parse HEAD~1)  # or origin/main
+BASE_SHA=$(git rev-parse HEAD~1)  # or: git merge-base origin/main HEAD
 HEAD_SHA=$(git rev-parse HEAD)
 ```
 
@@ -42,8 +42,10 @@ Dispatch a `general-purpose` subagent, filling the template at [code-reviewer.md
 **3. Act on feedback:**
 - Fix Critical issues immediately
 - Fix Important issues before proceeding
-- Note Minor issues for later
+- Resolve Can't-verify items that affect the verdict by getting the missing evidence
+- Record Minor issues as deferrals with a revisit trigger
 - Push back if reviewer is wrong (with reasoning)
+- Act on the verdict: do not merge on "Do not merge" or "Verdict withheld"
 
 ## Common Rationalizations
 
