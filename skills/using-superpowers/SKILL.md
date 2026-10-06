@@ -13,6 +13,7 @@ Check for relevant skills before starting work. If a skill clearly applies, invo
 
 Match the skill to the work:
 - **Process skills** (brainstorming, systematic-debugging) set the approach when the task warrants it.
+- **Quality skills** (writing-readable-code) apply during implementation to guide code readability and maintainability.
 - **Implementation skills** carry out the work.
 
 For clear, localized tasks where the right action is obvious, proceed directly — not every task needs a skill. Skills add value when there is genuine ambiguity, complexity, risk, or architectural impact.
@@ -23,6 +24,7 @@ When multiple skills apply, process skills come first.
 
 - "Let's build X" → consider superpowers:brainstorming if design decisions are needed, then implementation skills.
 - "Fix this bug" → consider superpowers:systematic-debugging if the cause isn't obvious, then domain skills.
+- Writing or modifying code → superpowers:writing-readable-code applies throughout.
 
 ## Red Flags
 
