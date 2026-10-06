@@ -24,7 +24,7 @@ If the spec covers multiple independent subsystems, suggest breaking this into s
 
 ## File Structure
 
-Before defining tasks, map out which files will be created or modified and what each one is responsible for.
+Before defining tasks, map out which files will be created or modified and what each one is responsible for. Follow superpowers:structuring-projects for grouping, colocation, and naming decisions.
 
 - Design units with clear boundaries and well-defined interfaces. Each file should have one clear responsibility.
 - Prefer smaller, focused files over large ones that do too much.

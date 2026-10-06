@@ -7,6 +7,8 @@ description: Use when writing or modifying code in any language — guides namin
 
 Code is read far more than it is written. Optimize for the reader.
 
+**Related:** For file and folder organization, see superpowers:structuring-projects.
+
 ## Naming
 
 Name by what it **is** or **does**, not by type or implementation.

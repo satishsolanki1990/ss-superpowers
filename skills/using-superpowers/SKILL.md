@@ -13,7 +13,7 @@ Check for relevant skills before starting work. If a skill clearly applies, invo
 
 Match the skill to the work:
 - **Process skills** (brainstorming, systematic-debugging) set the approach when the task warrants it.
-- **Quality skills** (writing-readable-code) apply during implementation to guide code readability and maintainability.
+- **Quality skills** (writing-readable-code, structuring-projects) apply during implementation to guide code readability, maintainability, and project organization.
 - **Implementation skills** carry out the work.
 
 For clear, localized tasks where the right action is obvious, proceed directly — not every task needs a skill. Skills add value when there is genuine ambiguity, complexity, risk, or architectural impact.

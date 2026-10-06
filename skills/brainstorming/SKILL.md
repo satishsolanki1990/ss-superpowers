@@ -169,7 +169,7 @@ is the whole process.
 - Cover: architecture, components, data flow, error handling, testing
 - End with the open decisions, each with your recommendation
 
-**Design for isolation and clarity:**
+**Design for isolation and clarity** (see superpowers:structuring-projects for file/folder conventions)**:**
 
 - Break the system into smaller units that each have one clear purpose, communicate through well-defined interfaces, and can be understood and tested independently
 - Smaller, well-bounded units are also easier to work with — you reason better about code you can hold in context at once, and your edits are more reliable when files are focused.
