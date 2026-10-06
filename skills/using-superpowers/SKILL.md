@@ -13,7 +13,7 @@ Check for relevant skills before starting work. If a skill clearly applies, invo
 
 Match the skill to the work:
 - **Process skills** (brainstorming, systematic-debugging) set the approach when the task warrants it.
-- **Quality skills** (writing-readable-code, structuring-projects) apply during implementation to guide code readability, maintainability, and project organization.
+- **Quality skills** (writing-readable-code, structuring-projects, test-driven-development) apply during implementation to guide code readability, maintainability, project organization, and robustness. TDD catches edge cases and proves correctness — it supports implementation, never drives it alone.
 - **Implementation skills** carry out the work.
 
 For clear, localized tasks where the right action is obvious, proceed directly — not every task needs a skill. Skills add value when there is genuine ambiguity, complexity, risk, or architectural impact.

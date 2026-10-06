@@ -7,7 +7,7 @@ description: Use when writing or modifying code in any language — guides namin
 
 Code is read far more than it is written. Optimize for the reader.
 
-**Related:** For file and folder organization, see superpowers:structuring-projects.
+**Related:** For file and folder organization, see superpowers:structuring-projects. For robustness and edge case coverage, see superpowers:test-driven-development — TDD supports implementation but should never be its sole driver.
 
 ## Naming
 
