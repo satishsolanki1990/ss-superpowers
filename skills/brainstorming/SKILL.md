@@ -122,13 +122,15 @@ your path.
 **Architectural:**
 1. **Investigate (read-only)** — files, docs, recent commits, recorded decisions; file:line evidence
 2. **Offer the visual companion just-in-time** — NOT upfront. The first time a question would genuinely be clearer shown than described, offer it then (see Visual Companion section below).
-3. **Ask clarifying questions** — understand purpose/constraints/success criteria; ask related questions together
-4. **Propose approaches** — with trade-offs and your recommendation, only when multiple approaches are genuinely viable and their trade-offs materially matter; otherwise recommend the strongest straightforward solution
-5. **Present design + open decisions** — scaled to complexity; STOP for explicit approval of the design and every open decision
-6. **Write design doc** (when warranted) — save to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` and commit. A formal spec is warranted when the user requests one, the decision needs preservation for future developers, multiple people need to coordinate around it, or repository conventions require it.
-7. **Spec self-review** (if spec written) — quick inline check for placeholders, contradictions, ambiguity, scope (see below)
-8. **User reviews written spec** (if spec written) — STOP until approved
-9. **Transition to implementation** — invoke writing-plans skill when the resulting implementation is substantial enough to benefit from formal task decomposition. Otherwise proceed directly.
+3. **Requirements** — capture functional and non-functional requirements; present and get agreement before designing (see The Process below)
+4. **High-level design** — components, boundaries, data flow, API surface; thin enough to validate direction without over-committing
+5. **Get agreement on HLD** — STOP and wait for explicit yes before going deeper
+6. **Low-level design** — internal module structure, schemas, error handling, infra considerations, detailed breakdown
+7. **Present full design + open decisions** — scaled to complexity; STOP for explicit approval of the design and every open decision
+8. **Write design doc** (when warranted) — save to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` and commit. A formal spec is warranted when the user requests one, the decision needs preservation for future developers, multiple people need to coordinate around it, or repository conventions require it.
+9. **Spec self-review** (if spec written) — quick inline check for placeholders, contradictions, ambiguity, scope (see below)
+10. **User reviews written spec** (if spec written) — STOP until approved
+11. **Transition to implementation** — invoke writing-plans skill when the resulting implementation is substantial enough to benefit from formal task decomposition. Otherwise proceed directly.
 
 **Terminal states are path-bound.** Architectural: after approval, if
 formal planning is warranted, invoke writing-plans; otherwise implement
@@ -138,45 +140,76 @@ Spike: the terminal state is a reported recommendation.
 ## The Process
 
 The subsections below serve the bounded and architectural paths (a
-spike stops at "present the probe, get a nod"). Sections from
-**Exploring approaches** onward are architectural-path depth — for
-bounded work, context plus a few questions plus a short in-chat design
-is the whole process.
+spike stops at "present the probe, get a nod"). For bounded work,
+investigation + requirements + a short in-chat design is the whole
+process. The full requirements → HLD → LLD progression applies to
+architectural work.
 
-**Understanding the idea:**
+### 1. Requirements
 
-- Investigate the current project state first (files, docs, recent commits) — read-only, with file:line evidence
-- Before asking detailed questions, assess scope: if the request describes multiple independent subsystems, flag this immediately. Help decompose into sub-projects if needed.
-- For appropriately-scoped projects, ask questions to refine the idea
-- Prefer multiple choice questions when possible
-- Focus on understanding: purpose, constraints, success criteria
+Start here for both bounded and architectural paths. Capture what the
+system must do before deciding how.
 
-**Exploring approaches:**
+**Functional requirements** — the behaviors:
+- What does the user/caller do? What does the system do in response?
+- What are the inputs, outputs, and state changes?
+- What are the edge cases and error scenarios?
 
-- Propose approaches with trade-offs only when genuinely needed
-- Lead with your recommended option and explain why
-- YAGNI ruthlessly - remove unnecessary features from every approach and design
-- Performance and optimization work needs a concrete signal: a measured
-  threshold breach, a reproducible latency or resource problem, a
-  user-facing issue, or a known dependency with an explicit requirement.
-  Otherwise defer it with a revisit trigger (see using-superpowers,
-  Deferrals)
+**Non-functional requirements** — the constraints:
+- Performance: latency, throughput, resource budgets
+- Scale: data volume, concurrency, growth expectations
+- Security: auth, permissions, data sensitivity
+- Reliability: availability, failure tolerance, recovery
+- Observability: logging, monitoring, alerting needs
 
-**Presenting the design:**
+Present requirements and **get agreement** before designing. Wrong
+requirements produce correct implementations of the wrong thing.
 
-- Scale each section to its complexity: a few sentences if straightforward, up to 200-300 words if nuanced
-- Present the whole design, then ask for approval once; don't stop after every section
-- Cover: architecture, components, data flow, error handling, testing
-- End with the open decisions, each with your recommendation
+For bounded changes, requirements may be a few bullet points. Scale to
+complexity, not ceremony.
 
-**Design for isolation and clarity** (see superpowers:structuring-projects for file/folder conventions)**:**
+### 2. High-Level Design
+
+Thin enough to validate direction without over-committing detail.
+
+- **Components and boundaries** — what are the major pieces and what does each own?
+- **Data flow** — how does information move between components? What are the inputs and outputs at each boundary?
+- **API surface** — what do consumers see? Endpoints, function signatures, events, messages.
+- **Key trade-offs** — where you chose one approach over another, say why.
+
+Propose approaches with trade-offs only when multiple are genuinely
+viable and their differences materially matter; otherwise recommend the
+strongest straightforward solution and explain why.
+
+YAGNI ruthlessly — remove unnecessary features from every approach.
+Performance and optimization work needs a concrete signal (a measured
+threshold breach, a reproducible problem, a user-facing issue).
+Otherwise defer it with a revisit trigger (see using-superpowers,
+Deferrals).
+
+**Get agreement on HLD** before going deeper. A wrong direction caught
+here costs minutes; caught in LLD it costs hours.
+
+### 3. Low-Level Design
+
+Dive into the internals once HLD direction is confirmed.
+
+- **Module internals** — classes, functions, state management within each component
+- **Data models and schemas** — tables, documents, types, relationships, migrations
+- **Error handling** — failure modes, retry strategies, circuit breakers, user-facing error messages
+- **Infrastructure** — deployment, configuration, environment differences, dependencies
+- **Testing strategy** — what to test at each level (unit, integration, e2e), what to mock vs use real
+
+**Design for isolation and clarity** (see superpowers:structuring-projects for file/folder conventions):
 
 - Break the system into smaller units that each have one clear purpose, communicate through well-defined interfaces, and can be understood and tested independently
 - Smaller, well-bounded units are also easier to work with — you reason better about code you can hold in context at once, and your edits are more reliable when files are focused.
 
-**Working in existing codebases:**
+### Working in existing codebases
 
+- Investigate the current project state first (files, docs, recent commits) — read-only, with file:line evidence
 - Explore the current structure before proposing changes. Follow existing patterns.
+- Before asking detailed questions, assess scope: if the request describes multiple independent subsystems, flag this immediately. Help decompose into sub-projects if needed.
 - Where existing code has problems that affect the work, include targeted improvements as part of the design.
 - Don't propose unrelated refactoring.
 
