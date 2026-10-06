@@ -122,15 +122,16 @@ your path.
 **Architectural:**
 1. **Investigate (read-only)** — files, docs, recent commits, recorded decisions; file:line evidence
 2. **Offer the visual companion just-in-time** — NOT upfront. The first time a question would genuinely be clearer shown than described, offer it then (see Visual Companion section below).
-3. **Requirements** — capture functional and non-functional requirements; present and get agreement before designing (see The Process below)
-4. **High-level design** — components, boundaries, data flow, API surface; thin enough to validate direction without over-committing
-5. **Get agreement on HLD** — STOP and wait for explicit yes before going deeper
-6. **Low-level design** — internal module structure, schemas, error handling, infra considerations, detailed breakdown
-7. **Present full design + open decisions** — scaled to complexity; STOP for explicit approval of the design and every open decision
-8. **Write design doc** (when warranted) — save to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` and commit. A formal spec is warranted when the user requests one, the decision needs preservation for future developers, multiple people need to coordinate around it, or repository conventions require it.
-9. **Spec self-review** (if spec written) — quick inline check for placeholders, contradictions, ambiguity, scope (see below)
-10. **User reviews written spec** (if spec written) — STOP until approved
-11. **Transition to implementation** — invoke writing-plans skill when the resulting implementation is substantial enough to benefit from formal task decomposition. Otherwise proceed directly.
+3. **Ask clarifying questions** — understand purpose, constraints, success criteria; ask related questions together; prefer multiple choice when possible
+4. **Requirements** — capture functional and non-functional requirements; present and get agreement before designing (see The Process below)
+5. **High-level design** — components, boundaries, data flow, API surface; thin enough to validate direction without over-committing
+6. **Get agreement on HLD** — STOP and wait for explicit yes before going deeper
+7. **Low-level design** — internal module structure, schemas, error handling, infra considerations, detailed breakdown
+8. **Present full design + open decisions** — scaled to complexity; STOP for explicit approval of the design and every open decision
+9. **Write design doc** (when warranted) — save to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` and commit. A formal spec is warranted when the user requests one, the decision needs preservation for future developers, multiple people need to coordinate around it, or repository conventions require it.
+10. **Spec self-review** (if spec written) — quick inline check for placeholders, contradictions, ambiguity, scope (see below)
+11. **User reviews written spec** (if spec written) — STOP until approved
+12. **Transition to implementation** — invoke writing-plans skill when the resulting implementation is substantial enough to benefit from formal task decomposition. Otherwise proceed directly.
 
 **Terminal states are path-bound.** Architectural: after approval, if
 formal planning is warranted, invoke writing-plans; otherwise implement
